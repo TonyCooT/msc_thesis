@@ -1,0 +1,297 @@
+<?xml version="1.0"?>
+<robot name="object314"
+  xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Matherials -->
+  <xacro:macro name="gazebo_blue" params="link">
+    <gazebo reference="${link}">
+      <material>Gazebo/Blue</material>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="gazebo_gray" params="link">
+    <gazebo reference="${link}">
+      <material>Gazebo/Gray</material>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="gazebo_green" params="link">
+    <gazebo reference="${link}">
+      <material>Gazebo/Green</material>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="gazebo_red" params="link">
+    <gazebo reference="${link}">
+      <material>Gazebo/Red</material>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="gazebo_white" params="link">
+    <gazebo reference="${link}">
+      <material>Gazebo/White</material>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="gazebo_yellow" params="link">
+    <gazebo reference="${link}">
+      <material>Gazebo/Yellow</material>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- Physics -->
+  <xacro:macro name="gazebo_physics" params="link">
+    <gazebo reference="${link}">
+        <selfCollide>false</selfCollide>
+        <mu1 value="1.0"/>
+        <mu2 value="2.0"/>
+        <kp value="1e6" />
+        <kd value="1e6" />
+        <fdir1 value="1 0 0"/>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- Control plugins -->
+  <xacro:macro name="gazebo_diff_drive" params="prefix left_joint right_joint separation diameter">
+    <gazebo>
+      <plugin name="${prefix}_wheel_diff_drive" filename="libgazebo_ros_diff_drive.so">
+        <ros>
+          <namespace>wheel</namespace>
+        </ros>
+        <left_joint>${left_joint}</left_joint>
+        <right_joint>${right_joint}</right_joint>
+        <wheel_separation>${separation}</wheel_separation>
+        <wheel_diameter>${diameter}</wheel_diameter>
+        <max_wheel_torque>50</max_wheel_torque>
+        <max_wheel_acceleration>1.0</max_wheel_acceleration>
+        <command_topic>cmd_vel</command_topic>
+        <publish_odom>true</publish_odom>
+        <publish_odom_tf>false</publish_odom_tf>
+        <publish_wheel_tf>true</publish_wheel_tf>
+        <odometry_topic>odom</odometry_topic>
+        <odometry_frame>odom</odometry_frame>
+        <robot_base_frame>base_footprint</robot_base_frame>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="hardware_drive" params="min_vel max_vel">
+    <ros2_control name="hardware_drive" type="system">
+      <hardware>
+        <plugin>gazebo_ros2_control/GazeboSystem</plugin>
+      </hardware>
+      <joint name="left_first_wheel_to_base">
+        <command_interface name="velocity">
+          <param name="min">${min_vel}</param>
+          <param name="max">${max_vel}</param>
+        </command_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="position"/>
+      </joint>
+      <joint name="left_second_wheel_to_base">
+        <command_interface name="velocity">
+          <param name="min">${min_vel}</param>
+          <param name="max">${max_vel}</param>
+        </command_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="position"/>
+      </joint>
+      <joint name="left_third_wheel_to_base">
+        <command_interface name="velocity">
+          <param name="min">${min_vel}</param>
+          <param name="max">${max_vel}</param>
+        </command_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="position"/>
+      </joint>
+      <joint name="left_fourth_wheel_to_base">
+        <command_interface name="velocity">
+          <param name="min">${min_vel}</param>
+          <param name="max">${max_vel}</param>
+        </command_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="position"/>
+      </joint>
+      <joint name="right_first_wheel_to_base">
+        <command_interface name="velocity">
+          <param name="min">${min_vel}</param>
+          <param name="max">${max_vel}</param>
+        </command_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="position"/>
+      </joint>
+      <joint name="right_second_wheel_to_base">
+        <command_interface name="velocity">
+          <param name="min">${min_vel}</param>
+          <param name="max">${max_vel}</param>
+        </command_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="position"/>
+      </joint>
+      <joint name="right_third_wheel_to_base">
+        <command_interface name="velocity">
+          <param name="min">${min_vel}</param>
+          <param name="max">${max_vel}</param>
+        </command_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="position"/>
+      </joint>
+      <joint name="right_fourth_wheel_to_base">
+        <command_interface name="velocity">
+          <param name="min">${min_vel}</param>
+          <param name="max">${max_vel}</param>
+        </command_interface>
+        <state_interface name="velocity"/>
+        <state_interface name="position"/>
+      </joint>
+    </ros2_control>
+
+    <gazebo>
+      <plugin name="gazebo_ros2_control" filename="libgazebo_ros2_control.so">
+        <robot_param>robot_description</robot_param>
+        <robot_param_node>robot_state_publisher</robot_param_node>
+        <parameters>$(arg control_config)</parameters>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
+  <!-- Sensor plugins -->
+  <xacro:macro name="gazebo_imu" params="link">
+    <gazebo reference="${link}">
+      <sensor type="imu" name="imu">
+        <always_on>true</always_on>
+        <update_rate>40</update_rate>
+        <visualize>false</visualize>
+        <plugin name="imu_controller" filename="libgazebo_ros_imu_sensor.so">
+          <ros>
+            <namespace>imu</namespace>
+            <remapping>~/out:=data</remapping>
+          </ros>
+          <initial_orientation_as_reference>false</initial_orientation_as_reference>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="gazebo_gps" params="link">
+    <gazebo reference="${link}">
+      <sensor type="gps" name="gps">
+        <always_on>true</always_on>
+        <update_rate>2</update_rate>
+        <plugin name="gps_controller" filename="libgazebo_ros_gps_sensor.so">
+          <ros>
+            <namespace>gps</namespace>
+            <remapping>~/out:=fix</remapping>
+            <remapping>~/vel:=velocity</remapping>
+          </ros>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="gazebo_camera" params="prefix">
+    <gazebo reference="${prefix}_camera_link">
+      <sensor type="camera" name="${prefix}_camera">
+        <always_on>true</always_on>
+        <update_rate>30.0</update_rate>
+        <visualize>false</visualize>
+        <camera name="${prefix}_camera">
+          <horizontal_fov>1.849</horizontal_fov>
+          <image>
+            <width>1920</width>
+            <height>1080</height>
+            <format>R8G8B8</format>
+          </image>
+          <clip>
+            <near>0.02</near>
+            <far>100</far>
+          </clip>
+        </camera>
+        <plugin name="${prefix}_camera_controller" filename="libgazebo_ros_camera.so">
+           <ros>
+              <namespace>camera</namespace>
+              <remapping>~/image_raw:=image_raw</remapping>
+              <remapping>~/camera_info:=camera_info</remapping>
+              <remapping>~/image_trigger:=image_trigger</remapping>
+            </ros>
+            <camera_name>${prefix}_camera</camera_name>
+            <frame_name>${prefix}_camera_link_optical</frame_name>
+            <triggered>false</triggered>
+            <hack_baseline>0.07</hack_baseline>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="gazebo_2dlidar" params="link">
+    <gazebo reference="${link}">
+      <sensor type="ray" name="2dlidar">
+        <always_on>true</always_on>
+        <update_rate>10</update_rate>
+        <visualize>false</visualize>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>800</samples>
+              <resolution>1</resolution>
+              <min_angle>-1.570796</min_angle>
+              <max_angle>1.570796</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.20</min>
+            <max>10.0</max>
+            <resolution>0.015</resolution>
+          </range>
+        </ray>
+        <plugin name="lidar_controller" filename="libgazebo_ros_ray_sensor.so">
+          <ros>
+            <namespace>lidar</namespace>
+            <remapping>~/out:=scan</remapping>
+          </ros>
+          <frame_name>${link}</frame_name>
+          <output_type>sensor_msgs/LaserScan</output_type>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+
+  <xacro:macro name="gazebo_3dlidar" params="prefix">
+    <gazebo reference="${prefix}_lidar_link">
+      <sensor type="ray" name="${prefix}_3dlidar">
+        <always_on>true</always_on>
+        <update_rate>10</update_rate>
+        <visualize>false</visualize>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>300</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.283</min_angle>
+              <max_angle>0.283</max_angle>
+            </horizontal>
+            <vertical>
+              <samples>32</samples>
+              <resolution>1</resolution>
+              <min_angle>-0.283</min_angle>
+              <max_angle>0.283</max_angle>
+            </vertical>
+          </scan>
+          <range>
+            <min>1.0</min>
+            <max>90.0</max>
+            <resolution>0.02</resolution>
+          </range>
+        </ray>
+        <plugin name="${prefix}_lidar_controller" filename="libgazebo_ros_ray_sensor.so">
+          <ros>
+            <namespace>lidar</namespace>
+            <remapping>~/out:=${prefix}_lidar/points</remapping>
+          </ros>
+          <frame_name>${prefix}_lidar_link</frame_name>
+          <output_type>sensor_msgs/PointCloud2</output_type>
+        </plugin>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+</robot>

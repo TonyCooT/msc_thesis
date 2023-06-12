@@ -1,0 +1,239 @@
+<?xml version="1.0"?>
+<robot name="object314"
+  xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Wheel size and position, m -->
+  <xacro:property name="w_width" value="0.210"/>
+  <xacro:property name="w_radius" value="0.09"/>
+  <xacro:property name="first_w_x_offset" value="0.37971"/>
+  <xacro:property name="second_w_x_offset" value="0.12971"/>
+  <xacro:property name="third_w_x_offset" value="-0.12029"/>
+  <xacro:property name="fourth_w_x_offset" value="-0.37029"/>
+  <xacro:property name="w_y_offset" value="0.43"/>
+  <xacro:property name="w_z_offset" value="-0.28608"/>
+
+  <!-- Support roller size and position, m -->
+  <xacro:property name="sr_width" value="0.222"/>
+  <xacro:property name="sr_radius" value="0.04"/>
+  <xacro:property name="front_sr_x_offset" value="0.11785"/>
+  <xacro:property name="rear_sr_x_offset" value="-0.10215"/>
+  <xacro:property name="sr_y_offset" value="0.43"/>
+  <xacro:property name="sr_z_offset" value="0.017357"/>
+
+  <!-- Tensioning roller size and position, m  -->
+  <xacro:property name="tnr_width" value="0.210"/>
+  <xacro:property name="tnr_radius" value="0.09"/>
+  <xacro:property name="tnr_x_offset" value="0.57395"/>
+  <xacro:property name="tnr_y_offset" value="0.43"/>
+  <xacro:property name="tnr_z_offset" value="-0.041643"/>
+
+  <!-- Drive wheel size and position, m -->
+  <xacro:property name="dw_width" value="0.116"/>
+  <xacro:property name="dw_radius" value="0.105"/>
+  <xacro:property name="dw_x_offset" value="-0.55215"/>
+  <xacro:property name="dw_y_offset" value="0.4295"/>
+  <xacro:property name="dw_z_offset" value="-0.044643"/>
+
+  <!-- Track position, m -->
+  <xacro:property name="t_x_offset" value="0.57395"/>
+  <xacro:property name="t_y_offset" value="0.43"/>
+  <xacro:property name="t_z_offset" value="-0.041643"/>
+
+  <!-- Wheel macro -->
+  <xacro:macro name="wheel" params="prefix order x_offset y_reflect">
+    <link name="${prefix}_${order}_wheel_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find object314_description)/meshes/${prefix}_${order}_wheel_link.STL"/>
+        </geometry>
+        <material name="gray"/>
+      </visual>
+      <inertial>
+        <origin xyz="6.9226E-10 -1.7099E-12 1.2784E-11" rpy="0 0 0"/>
+        <mass value="1.0698"/>
+        <inertia ixx="0.0027827" ixy="2.1063E-12" ixz="1.0476E-11" iyy="0.0051995" iyz="-1.0425E-10" izz="0.0027827"/>
+      </inertial>
+      <collision>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${w_radius}" length="${w_width}"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}_${order}_wheel_to_base" type="continuous">
+      <origin xyz="${x_offset} ${y_reflect*w_y_offset} ${w_z_offset}" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="${prefix}_${order}_wheel_link"/>
+      <axis xyz="0 1 0"/>
+      <limit effort="100.0" lower="0.0" upper="0.0" velocity="10.0"/>
+    </joint>
+
+    <xacro:gazebo_gray link="${prefix}_${order}_wheel_link"/>
+    <xacro:gazebo_physics link="${prefix}_${order}_wheel_link"/>
+  </xacro:macro>
+
+  <!-- Support roller macro -->
+  <xacro:macro name="support_roller" params="prefix order x_offset y_reflect">
+    <link name="${prefix}_${order}_support_roller_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find object314_description)/meshes/${prefix}_${order}_support_roller_link.STL"/>
+        </geometry>
+        <material name="gray"/>
+      </visual>
+      <inertial>
+        <origin xyz="-2.2551E-16 0.00071168 -3.6082E-16" rpy="0 0 0"/>
+        <mass value="0.50128"/>
+        <inertia ixx="0.00037779" ixy="8.4627E-21" ixz="1.4358E-20" iyy="0.00049267" iyz="-1.5148E-20" izz="0.00037779"/>
+      </inertial>
+      <collision>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${sr_radius}" length="${sr_width}"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}_${order}_support_roller_to_base" type="fixed">
+      <origin xyz="${x_offset} ${y_reflect*sr_y_offset} ${sr_z_offset}" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="${prefix}_${order}_support_roller_link"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+
+    <xacro:gazebo_gray link="${prefix}_${order}_support_roller_link"/>
+  </xacro:macro>
+
+  <!-- Tensioning roller macro -->
+  <xacro:macro name="tensioning_roller" params="prefix y_reflect">
+    <link name="${prefix}_tensioning_roller_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find object314_description)/meshes/${prefix}_tensioning_roller_link.STL"/>
+        </geometry>
+        <material name="gray"/>
+      </visual>
+      <inertial>
+        <origin xyz="-3.2326E-11 0.00050736 1.1668E-10" rpy="0 0 0"/>
+        <mass value="1.1277"/>
+        <inertia ixx="0.0027982" ixy="1.8551E-11" ixz="1.3649E-10" iyy="0.0052307" iyz="5.0955E-12" izz="0.0027982"/>
+      </inertial>
+      <collision>
+        <origin xyz="0 0 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${tnr_radius}" length="${tnr_width}"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}_tensioning_roller_to_base" type="fixed">
+      <origin xyz="${tnr_x_offset} ${y_reflect*tnr_y_offset} ${tnr_z_offset}" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="${prefix}_tensioning_roller_link"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+
+    <xacro:gazebo_gray link="${prefix}_tensioning_roller_link"/>
+  </xacro:macro>
+
+  <!-- Drive wheel macro -->
+  <xacro:macro name="drive_wheel" params="prefix y_reflect">
+    <link name="${prefix}_drive_wheel_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find object314_description)/meshes/${prefix}_drive_wheel_link.STL"/>
+        </geometry>
+        <material name="gray"/>
+      </visual>
+      <inertial>
+        <origin xyz="5.4926E-07 -0.025589 -3.1843E-06" rpy="0 0 0"/>
+        <mass value="1.9959"/>
+        <inertia ixx="0.0028031" ixy="-2.3161E-13" ixz="5.9328E-08" iyy="0.0049683" iyz="3.7319E-14" izz="0.0028033"/>
+      </inertial>
+      <collision>
+        <origin xyz="0 ${y_reflect*0.04375} 0" rpy="${pi/2} 0 0"/>
+        <geometry>
+          <cylinder radius="${dw_radius}" length="${dw_width}"/>
+        </geometry>
+      </collision>
+    </link>
+
+    <joint name="${prefix}_drive_wheel_to_base" type="fixed">
+      <origin xyz="${dw_x_offset} ${y_reflect*dw_y_offset} ${dw_z_offset}" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="${prefix}_drive_wheel_link"/>
+      <axis xyz="0 1 0"/>
+    </joint>
+
+    <xacro:gazebo_gray link="${prefix}_drive_wheel_link"/>
+  </xacro:macro>
+
+  <!-- Track macro -->
+  <xacro:macro name="track" params="prefix y_reflect">
+    <link name="${prefix}_track_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find object314_description)/meshes/${prefix}_track_link.STL"/>
+        </geometry>
+        <material name="gray"/>
+      </visual>
+      <inertial>
+        <origin xyz="-0.56301 -2.3731E-14 -0.095127" rpy="0 0 0"/>
+        <mass value="6.7677"/>
+        <inertia ixx="0.02665" ixy="-6.1575E-14" ixz="1.1967E-05" iyy="0.0014381" iyz="3.258E-15" izz="0.0269"/>
+      </inertial>
+      <!--
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find object314_description)/meshes/${prefix}_track_link.STL"/>
+        </geometry>
+      </collision>
+      -->
+    </link>
+
+    <joint name="${prefix}_track_to_base" type="fixed">
+      <origin xyz="${t_x_offset} ${y_reflect*t_y_offset} ${t_z_offset}" rpy="0 0 0"/>
+      <parent link="base_link"/>
+      <child link="${prefix}_track_link"/>
+    </joint>
+
+    <xacro:gazebo_gray link="${prefix}_track_link"/>
+  </xacro:macro>
+
+  <xacro:wheel prefix="left" order="first" x_offset="${first_w_x_offset}" y_reflect="1"/>
+  <xacro:wheel prefix="left" order="second" x_offset="${second_w_x_offset}" y_reflect="1"/>
+  <xacro:wheel prefix="left" order="third" x_offset="${third_w_x_offset}" y_reflect="1"/>
+  <xacro:wheel prefix="left" order="fourth" x_offset="${fourth_w_x_offset}" y_reflect="1"/>
+  <xacro:support_roller prefix="left" order="front" x_offset="${front_sr_x_offset}" y_reflect="1"/>
+  <xacro:support_roller prefix="left" order="rear" x_offset="${rear_sr_x_offset}" y_reflect="1"/>
+  <xacro:tensioning_roller prefix="left" y_reflect="1"/>
+  <xacro:drive_wheel prefix="left" y_reflect="1"/>
+  <xacro:track prefix="left" y_reflect="1"/>
+
+  <xacro:wheel prefix="right" order="first" x_offset="${first_w_x_offset}" y_reflect="-1"/>
+  <xacro:wheel prefix="right" order="second" x_offset="${second_w_x_offset}" y_reflect="-1"/>
+  <xacro:wheel prefix="right" order="third" x_offset="${third_w_x_offset}" y_reflect="-1"/>
+  <xacro:wheel prefix="right" order="fourth" x_offset="${fourth_w_x_offset}" y_reflect="-1"/>
+  <xacro:support_roller prefix="right" order="front" x_offset="${front_sr_x_offset}" y_reflect="-1"/>
+  <xacro:support_roller prefix="right" order="rear" x_offset="${rear_sr_x_offset}" y_reflect="-1"/>
+  <xacro:tensioning_roller prefix="right" y_reflect="-1"/>
+  <xacro:drive_wheel prefix="right" y_reflect="-1"/>
+  <xacro:track prefix="right" y_reflect="-1"/>
+
+  <xacro:if value="$(arg use_ros2_control)">
+    <xacro:hardware_drive min_vel="-10" max_vel="10"/>
+  </xacro:if>
+  <xacro:unless value="$(arg use_ros2_control)">
+    <xacro:gazebo_diff_drive prefix="first" left_joint="left_first_wheel_to_base" right_joint="right_first_wheel_to_base" separation="${2*w_y_offset}" diameter="${2*w_radius}"/>
+    <xacro:gazebo_diff_drive prefix="second" left_joint="left_second_wheel_to_base" right_joint="right_second_wheel_to_base" separation="${2*w_y_offset}" diameter="${2*w_radius}"/>
+    <xacro:gazebo_diff_drive prefix="third" left_joint="left_third_wheel_to_base" right_joint="right_third_wheel_to_base" separation="${2*w_y_offset}" diameter="${2*w_radius}"/>
+    <xacro:gazebo_diff_drive prefix="fourth" left_joint="left_fourth_wheel_to_base" right_joint="right_fourth_wheel_to_base" separation="${2*w_y_offset}" diameter="${2*w_radius}"/>
+  </xacro:unless>
+</robot>

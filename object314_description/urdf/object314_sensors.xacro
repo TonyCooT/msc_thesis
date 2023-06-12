@@ -1,0 +1,259 @@
+<?xml version="1.0"?>
+<robot name="object314"
+  xmlns:xacro="http://ros.org/wiki/xacro">
+
+  <!-- Front camera position, m -->
+  <xacro:property name="fc_x_offset" value="0.12052"/>
+  <xacro:property name="fc_roll" value="0.0"/>
+  <xacro:property name="fc_pitch" value="0.0"/>
+  <xacro:property name="fc_yaw" value="0.0"/>
+
+  <!-- Rear camera position, m -->
+  <xacro:property name="rc_x_offset" value="-0.12052"/>
+  <xacro:property name="rc_roll" value="0.0"/>
+  <xacro:property name="rc_pitch" value="0.0"/>
+  <xacro:property name="rc_yaw" value="${pi}"/>
+
+  <!-- LiDAR position, m -->
+  <xacro:property name="l_x_offset" value="0.1035"/>
+  <xacro:property name="l_z_offset" value="-0.031"/>
+
+  <!-- Front camera macro -->
+  <xacro:macro name="front_camera" params="prefix">
+    <link name="${prefix}_front_camera_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find object314_description)/meshes/${prefix}_front_camera_link.STL"/>
+        </geometry>
+        <material name="yellow"/>
+      </visual>
+      <inertial>
+        <origin xyz="-0.037631 -8.4655E-16 -4.0523E-15" rpy="0 0 0"/>
+        <mass value="0.24512"/>
+        <inertia ixx="0.00012816" ixy="1.7203E-20" ixz="-1.5133E-20" iyy="0.00018671" iyz="3.8465E-21" izz="0.00018671"/>
+      </inertial>
+      <!--
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find object314_description)/meshes/${prefix}_front_camera_link.STL"/>
+        </geometry>
+      </collision>
+      -->
+    </link>
+
+    <joint name="${prefix}_front_camera_to_camera_support" type="fixed">
+      <origin xyz="${fc_x_offset} 0 0" rpy="${fc_roll} ${fc_pitch} ${fc_yaw}"/>
+      <parent link="${prefix}_front_camera_support_link"/>
+      <child link="${prefix}_front_camera_link"/>
+    </joint>
+
+    <link name="${prefix}_front_camera_link_optical"></link>
+
+    <joint name="${prefix}_front_camera_optical_to_camera" type="fixed">
+      <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
+      <parent link="${prefix}_front_camera_link" />
+      <child link="${prefix}_front_camera_link_optical" />
+    </joint>
+
+    <xacro:gazebo_yellow link="${prefix}_front_camera_link"/>
+    <xacro:if value="$(arg use_camera)">
+      <xacro:gazebo_camera prefix="${prefix}_front"/>
+    </xacro:if>
+  </xacro:macro>
+
+  <!-- Rear camera macro -->
+  <xacro:macro name="rear_camera" params="prefix">
+    <link name="${prefix}_rear_camera_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find object314_description)/meshes/${prefix}_rear_camera_link.STL"/>
+        </geometry>
+        <material name="yellow"/>
+      </visual>
+      <inertial>
+        <origin xyz="-0.037631 -5.0862E-14 -1.1102E-15" rpy="0 0 0"/>
+        <mass value="0.24512"/>
+        <inertia ixx="0.00012816" ixy="1.1704E-20" ixz="2.0061E-19" iyy="0.00018671" iyz="-7.4243E-21" izz="0.00018671"/>
+      </inertial>
+      <!--
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find object314_description)/meshes/${prefix}_rear_camera_link.STL"/>
+        </geometry>
+      </collision>
+      -->
+    </link>
+
+    <joint name="${prefix}_rear_camera_to_camera_support" type="fixed">
+      <origin xyz="${rc_x_offset} 0 0" rpy="${rc_roll} ${rc_pitch} ${rc_yaw}"/>
+      <parent link="${prefix}_rear_camera_support_link"/>
+      <child link="${prefix}_rear_camera_link"/>
+    </joint>
+
+    <link name="${prefix}_rear_camera_link_optical"></link>
+
+    <joint name="${prefix}_rear_camera_optical_to_camera" type="fixed">
+      <origin xyz="0 0 0" rpy="${-pi/2} 0 ${-pi/2}" />
+      <parent link="${prefix}_rear_camera_link" />
+      <child link="${prefix}_rear_camera_link_optical" />
+    </joint>
+
+    <xacro:gazebo_yellow link="${prefix}_rear_camera_link"/>
+    <xacro:if value="$(arg use_camera)">
+      <xacro:gazebo_camera prefix="${prefix}_rear"/>
+    </xacro:if>
+  </xacro:macro>
+
+  <!-- LiDAR macro -->
+  <xacro:macro name="lidar" params="prefix">
+    <link name="${prefix}_lidar_link">
+      <visual>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find object314_description)/meshes/${prefix}_lidar_link.STL"/>
+        </geometry>
+        <material name="yellow"/>
+      </visual>
+      <inertial>
+        <origin xyz="-0.043203 5.5511E-17 -0.008358" rpy="0 0 0"/>
+        <mass value="0.7849"/>
+        <inertia ixx="0.00068815" ixy="6.3075E-19" ixz="2.5125E-05" iyy="0.00089838" iyz="-1.3044E-19" izz="0.00081463"/>
+      </inertial>
+      <!--
+      <collision>
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <geometry>
+          <mesh filename="file://$(find object314_description)/meshes/${prefix}_lidar_link.STL"/>
+        </geometry>
+      </collision>
+      -->
+    </link>
+
+    <joint name="${prefix}_lidar_to_lidar_support" type="fixed">
+      <origin xyz="${l_x_offset} 0 ${l_z_offset}" rpy="0 0 0"/>
+      <parent link="${prefix}_lidar_support_link"/>
+      <child link="${prefix}_lidar_link"/>
+    </joint>
+
+    <xacro:gazebo_yellow link="${prefix}_lidar_link"/>
+    <xacro:if value="$(arg use_3dlidar)">
+      <xacro:gazebo_3dlidar prefix="${prefix}"/>
+    </xacro:if>
+  </xacro:macro>
+
+  <!-- Left Track Rack -->
+  <xacro:front_camera prefix="left"/>
+  <xacro:rear_camera prefix="left"/>
+  <xacro:lidar prefix="left"/>
+
+  <link name="rplidar_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find object314_description)/meshes/rplidar_link.STL"/>
+      </geometry>
+      <material name="yellow"/>
+    </visual>
+    <inertial>
+      <origin xyz="-0.00056545 -1.4938E-05 -0.011701" rpy="0 0 0"/>
+      <mass value="0.19846"/>
+      <inertia ixx="9.4638E-05" ixy="5.8166E-08" ixz="2.6218E-06" iyy="9.0228E-05" iyz="3.4632E-08" izz="0.00013194"/>
+    </inertial>
+    <!--
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find object314_description)/meshes/rplidar_link.STL"/>
+      </geometry>
+    </collision>
+    -->
+  </link>
+
+  <joint name="rplidar_to_track_rack" type="fixed">
+    <origin xyz="0.47475 -0.002683 0.094" rpy="0 0 0"/>
+    <parent link="left_track_rack_link"/>
+    <child link="rplidar_link"/>
+  </joint>
+
+  <xacro:gazebo_yellow link="rplidar_link"/>
+  <xacro:if value="$(arg use_2dlidar)">
+    <xacro:gazebo_2dlidar link="rplidar_link"/>
+  </xacro:if>
+
+  <link name="imu_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find object314_description)/meshes/imu_link.STL"/>
+      </geometry>
+      <material name="yellow"/>
+    </visual>
+    <inertial>
+      <origin xyz="-0.0010278 -8.8161E-05 0.0015926" rpy="0 0 0"/>
+      <mass value="0.004905"/>
+      <inertia ixx="2.2166E-07" ixy="3.5705E-13" ixz="2.9272E-13" iyy="8.3158E-08" iyz="3.3218E-13" izz="2.9324E-07"/>
+    </inertial>
+    <!--
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find object314_description)/meshes/imu_link.STL"/>
+      </geometry>
+    </collision>
+    -->
+  </link>
+
+  <joint name="imu_to_onboard_pc" type="fixed">
+    <origin xyz="0.0265 0.0725 0.00812" rpy="0 0 0"/>
+    <parent link="onboard_pc_link"/>
+    <child link="imu_link"/>
+  </joint>
+
+  <xacro:gazebo_yellow link="imu_link"/>
+  <xacro:if value="$(arg use_imu)">
+    <xacro:gazebo_imu link="imu_link"/>
+  </xacro:if>
+
+  <link name="gps_link">
+    <visual>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find object314_description)/meshes/gps_link.STL"/>
+      </geometry>
+      <material name="yellow"/>
+    </visual>
+    <inertial>
+      <origin xyz="-0.00037635 -0.002816 -0.0018491" rpy="0 0 0"/>
+      <mass value="0.010118"/>
+      <inertia ixx="7.6201E-07" ixy="2.3013E-09" ixz="-1.6001E-12" iyy="4.6198E-07" iyz="2.5654E-13" izz="1.2179E-06"/>
+    </inertial>
+    <!--
+    <collision>
+      <origin xyz="0 0 0" rpy="0 0 0"/>
+      <geometry>
+        <mesh filename="file://$(find object314_description)/meshes/gps_link.STL"/>
+      </geometry>
+    </collision>
+    -->
+  </link>
+
+  <joint name="gps_to_onboard_pc" type="fixed">
+    <origin xyz="0.11618 0.069121 0.0087587" rpy="0 0 0"/>
+    <parent link="onboard_pc_link"/>
+    <child link="gps_link"/>
+  </joint>
+
+  <xacro:gazebo_yellow link="gps_link"/>
+  <xacro:if value="$(arg use_gps)">
+    <xacro:gazebo_gps link="gps_link"/>
+  </xacro:if>
+
+  <!-- Right Track Rack -->
+  <xacro:front_camera prefix="right"/>
+  <xacro:rear_camera prefix="right"/>
+  <xacro:lidar prefix="right"/>
+</robot>
