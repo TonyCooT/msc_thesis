@@ -65,8 +65,8 @@ class RlPlanner(Node):
         self.pub_twist = self.create_publisher(Twist, "cmd_vel", 1)
         self.sub_pose = self.create_subscription(PoseStamped, "pose", self.pose_callback, 1)
         self.sub_vel = self.create_subscription(Vector3, "velocity", self.velocity_callback, 1)
-        self.sub_global_goal = self.create_subscription(PoseStamped, "goal", self.goal_callback, 1)
         self.sub_peds = self.create_subscription(Peds, "peds", self.peds_callback, 1)
+        self.sub_global_goal = self.create_subscription(PoseStamped, "goal", self.goal_callback, 1)
 
         # control timer
         self.control_timer = self.create_timer(0.01, self.control_callback)
