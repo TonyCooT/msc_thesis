@@ -14,7 +14,7 @@ def generate_launch_description():
     pkg_share = os.path.join(get_package_share_path("object314_description"))
     default_rviz_config_path = os.path.join(pkg_share, "rviz", "sim.rviz")
     default_localization_config_path = os.path.join(pkg_share, "config", "localization.yaml")
-    default_world_path = os.path.join(pkg_share, "world", "social.world")
+    default_world_path = os.path.join(pkg_share, "world", "social_scene_static.world")
 
     rviz_arg = DeclareLaunchArgument(name="rviz_config", default_value=default_rviz_config_path,
                                      description="Absolute path to rviz config file")
@@ -94,5 +94,5 @@ def generate_launch_description():
         spawn_node,
         joint_state_broadcaster_spawn_node,
         delay_velocity_controller_spawn_callback,
-        localization_node
+        localization_node,
     ])

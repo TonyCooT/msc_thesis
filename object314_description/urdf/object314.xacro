@@ -18,6 +18,7 @@
 
   <!-- Gazebo -->
   <xacro:include filename="$(find object314_description)/urdf/object314_gazebo.xacro"/>
+  <xacro:gazebo_plugin_p3d link="base_footprint"/>
 
   <!-- Base footprint size and position, m -->
   <xacro:property name="bf_length" value="1.323"/>

@@ -51,6 +51,23 @@
     </gazebo>
   </xacro:macro>
 
+  <!-- Common plugins -->
+  <xacro:macro name="gazebo_plugin_p3d" params="link">
+    <gazebo>
+      <plugin name="gazebo_ros_p3d" filename="libgazebo_ros_p3d.so">
+        <ros>
+          <namespace></namespace>
+          <remapping>odom:=ground_truth</remapping>
+        </ros>
+        <body_name>${link}</body_name>
+        <update_rate>10</update_rate>
+        <xyz_offset>0 0 0</xyz_offset>
+        <rpy_offset>0 0 0</rpy_offset>
+        <gaussian_noise>0.00</gaussian_noise>
+      </plugin>
+    </gazebo>
+  </xacro:macro>
+
   <!-- Control plugins -->
   <xacro:macro name="gazebo_diff_drive" params="prefix left_joint right_joint separation diameter">
     <gazebo>

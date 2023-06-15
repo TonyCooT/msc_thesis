@@ -1,10 +1,10 @@
-<sdf version='1.7'>
-  <world name='social'>
+<sdf version="1.7">
+  <world name="simple">
 
-    <model name='ground_plane'>
+    <model name="ground_plane">
       <static>1</static>
-      <link name='link'>
-        <collision name='collision'>
+      <link name="link">
+        <collision name="collision">
           <geometry>
             <plane>
               <normal>0 0 1</normal>
@@ -29,7 +29,7 @@
           </surface>
           <max_contacts>10</max_contacts>
         </collision>
-        <visual name='visual'>
+        <visual name="visual">
           <cast_shadows>0</cast_shadows>
           <geometry>
             <plane>
@@ -50,9 +50,9 @@
       </link>
     </model>
 
-    <model name='ped_1'>
-      <pose>3 2 0.85 0 0 0</pose>
-      <link name='link'>
+    <model name="ped_1">
+      <pose>7 6 0.85 0 0 0</pose>
+      <link name="link">
         <inertial>
           <mass>1</mass>
           <inertia>
@@ -64,7 +64,7 @@
             <izz>0.125</izz>
           </inertia>
         </inertial>
-        <visual name='visual'>
+        <visual name="visual">
           <geometry>
             <cylinder>
               <radius>0.3</radius>
@@ -76,7 +76,7 @@
               <name>Gazebo/PioneerBody</name>
               <uri>file://media/materials/scripts/gazebo.material</uri>
             </script>
-            <shader type='pixel'>
+            <shader type="pixel">
               <normal_map>__default__</normal_map>
             </shader>
             <ambient>0.3 0.3 0.3 1</ambient>
@@ -87,7 +87,7 @@
           <transparency>0</transparency>
           <cast_shadows>1</cast_shadows>
         </visual>
-        <collision name='collision'>
+        <collision name="collision">
           <laser_retro>0</laser_retro>
           <max_contacts>10</max_contacts>
           <geometry>
@@ -152,9 +152,16 @@
 
       <plugin name="model_move_1" filename="libmodel_move.so">
         <goals>
-          <pose>8 9 0.85 0 0 0</pose>
-          <pose>9.5 2 0.85 0 0 0</pose>
-          <pose>3 2 0.85 0 0 0</pose>
+          <pose>0 6 0.85 0 0 0</pose>
+          <pose>7 6 0.85 0 0 0</pose>
+          <pose>0 6 0.85 0 0 0</pose>
+          <pose>7 6 0.85 0 0 0</pose>
+          <pose>0 6 0.85 0 0 0</pose>
+          <pose>7 6 0.85 0 0 0</pose>
+          <pose>0 6 0.85 0 0 0</pose>
+          <pose>7 6 0.85 0 0 0</pose>
+          <pose>0 6 0.85 0 0 0</pose>
+          <pose>7 6 0.85 0 0 0</pose>
         </goals>
       </plugin>
       <plugin name="gazebo_ros_p3d_1" filename="libgazebo_ros_p3d.so">
@@ -170,9 +177,9 @@
       </plugin>
     </model>
 
-    <model name='ped_2'>
-      <pose>8 9 0.85 0 0 0</pose>
-      <link name='link'>
+    <model name="ped_2">
+      <pose>2 3 0.85 0 0 0</pose>
+      <link name="link">
         <inertial>
           <mass>1</mass>
           <inertia>
@@ -184,7 +191,7 @@
             <izz>0.125</izz>
           </inertia>
         </inertial>
-        <visual name='visual'>
+        <visual name="visual">
           <geometry>
             <cylinder>
               <radius>0.3</radius>
@@ -196,7 +203,7 @@
               <name>Gazebo/PioneerBody</name>
               <uri>file://media/materials/scripts/gazebo.material</uri>
             </script>
-            <shader type='pixel'>
+            <shader type="pixel">
               <normal_map>__default__</normal_map>
             </shader>
             <ambient>0.3 0.3 0.3 1</ambient>
@@ -207,7 +214,7 @@
           <transparency>0</transparency>
           <cast_shadows>1</cast_shadows>
         </visual>
-        <collision name='collision'>
+        <collision name="collision">
           <laser_retro>0</laser_retro>
           <max_contacts>10</max_contacts>
           <geometry>
@@ -271,9 +278,16 @@
 
       <plugin name="model_move_2" filename="libmodel_move.so">
         <goals>
-          <pose>9.5 2 0.85 0 0 0</pose>
-          <pose>3 2 0.85 0 0 0</pose>
-          <pose>8 9 0.85 0 0 0</pose>
+          <pose>8 3 0.85 0 0 0</pose>
+          <pose>2 3 0.85 0 0 0</pose>
+          <pose>8 3 0.85 0 0 0</pose>
+          <pose>2 3 0.85 0 0 0</pose>
+          <pose>8 3 0.85 0 0 0</pose>
+          <pose>2 3 0.85 0 0 0</pose>
+          <pose>8 3 0.85 0 0 0</pose>
+          <pose>2 3 0.85 0 0 0</pose>
+          <pose>8 3 0.85 0 0 0</pose>
+          <pose>2 3 0.85 0 0 0</pose>
         </goals>
       </plugin>
       <plugin name="gazebo_ros_p3d_2" filename="libgazebo_ros_p3d.so">
@@ -289,9 +303,9 @@
       </plugin>
     </model>
 
-    <model name='ped_3'>
-      <pose>9.5 2 0.85 0 0 0</pose>
-      <link name='link'>
+    <model name="ped_3">
+      <pose>10 0 0.85 0 0 0</pose>
+      <link name="link">
         <inertial>
           <mass>1</mass>
           <inertia>
@@ -303,7 +317,7 @@
             <izz>0.125</izz>
           </inertia>
         </inertial>
-        <visual name='visual'>
+        <visual name="visual">
           <geometry>
             <cylinder>
               <radius>0.3</radius>
@@ -315,7 +329,7 @@
               <name>Gazebo/PioneerBody</name>
               <uri>file://media/materials/scripts/gazebo.material</uri>
             </script>
-            <shader type='pixel'>
+            <shader type="pixel">
               <normal_map>__default__</normal_map>
             </shader>
             <ambient>0.3 0.3 0.3 1</ambient>
@@ -326,7 +340,7 @@
           <transparency>0</transparency>
           <cast_shadows>1</cast_shadows>
         </visual>
-        <collision name='collision'>
+        <collision name="collision">
           <laser_retro>0</laser_retro>
           <max_contacts>10</max_contacts>
           <geometry>
@@ -390,9 +404,16 @@
 
       <plugin name="model_move_3" filename="libmodel_move.so">
         <goals>
-          <pose>3 2 0.85 0 0 0</pose>
-          <pose>8 9 0.85 0 0 0</pose>
-          <pose>8.5 2 0.85 0 0 0</pose>
+          <pose>3 0 0.85 0 0 0</pose>
+          <pose>10 0 0.85 0 0 0</pose>
+          <pose>3 0 0.85 0 0 0</pose>
+          <pose>10 0 0.85 0 0 0</pose>
+          <pose>3 0 0.85 0 0 0</pose>
+          <pose>10 0 0.85 0 0 0</pose>
+          <pose>3 0 0.85 0 0 0</pose>
+          <pose>10 0 0.85 0 0 0</pose>
+          <pose>3 0 0.85 0 0 0</pose>
+          <pose>10 0 0.85 0 0 0</pose>
         </goals>
       </plugin>
       <plugin name="gazebo_ros_p3d_3" filename="libgazebo_ros_p3d.so">
@@ -408,55 +429,324 @@
       </plugin>
     </model>
 
+    <model name="ped_4">
+      <pose>8 -3 0.85 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+        </inertial>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.3</radius>
+              <length>1.7</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/PioneerBody</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+            <shader type="pixel">
+              <normal_map>__default__</normal_map>
+            </shader>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name="collision">
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <geometry>
+            <cylinder>
+              <radius>0.3</radius>
+              <length>1.7</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
+          </surface>
+        </collision>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+      <allow_auto_disable>1</allow_auto_disable>
+
+      <plugin name="model_move_4" filename="libmodel_move.so">
+        <goals>
+          <pose>2 -3 0.85 0 0 0</pose>
+          <pose>8 -3 0.85 0 0 0</pose>
+          <pose>2 -3 0.85 0 0 0</pose>
+          <pose>8 -3 0.85 0 0 0</pose>
+          <pose>2 -3 0.85 0 0 0</pose>
+          <pose>8 -3 0.85 0 0 0</pose>
+          <pose>2 -3 0.85 0 0 0</pose>
+          <pose>8 -3 0.85 0 0 0</pose>
+          <pose>2 -3 0.85 0 0 0</pose>
+          <pose>8 -3 0.85 0 0 0</pose>
+        </goals>
+      </plugin>
+      <plugin name="gazebo_ros_p3d_4" filename="libgazebo_ros_p3d.so">
+        <ros>
+          <namespace>crowd</namespace>
+          <remapping>odom:=ped_4</remapping>
+        </ros>
+        <body_name>link</body_name>
+        <update_rate>10</update_rate>
+        <xyz_offset>0 0 0</xyz_offset>
+        <rpy_offset>0 0 0</rpy_offset>
+        <gaussian_noise>0.00</gaussian_noise>
+      </plugin>
+    </model>
+
+    <model name="ped_5">
+      <pose>0 -6 0.85 0 0 0</pose>
+      <link name="link">
+        <inertial>
+          <mass>1</mass>
+          <inertia>
+            <ixx>0.145833</ixx>
+            <ixy>0</ixy>
+            <ixz>0</ixz>
+            <iyy>0.145833</iyy>
+            <iyz>0</iyz>
+            <izz>0.125</izz>
+          </inertia>
+        </inertial>
+        <visual name="visual">
+          <geometry>
+            <cylinder>
+              <radius>0.3</radius>
+              <length>1.7</length>
+            </cylinder>
+          </geometry>
+          <material>
+            <script>
+              <name>Gazebo/PioneerBody</name>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+            </script>
+            <shader type="pixel">
+              <normal_map>__default__</normal_map>
+            </shader>
+            <ambient>0.3 0.3 0.3 1</ambient>
+            <diffuse>0.7 0.7 0.7 1</diffuse>
+            <specular>0.01 0.01 0.01 1</specular>
+            <emissive>0 0 0 1</emissive>
+          </material>
+          <transparency>0</transparency>
+          <cast_shadows>1</cast_shadows>
+        </visual>
+        <collision name="collision">
+          <laser_retro>0</laser_retro>
+          <max_contacts>10</max_contacts>
+          <geometry>
+            <cylinder>
+              <radius>0.3</radius>
+              <length>1.7</length>
+            </cylinder>
+          </geometry>
+          <surface>
+            <friction>
+              <ode>
+                <mu>1</mu>
+                <mu2>1</mu2>
+                <fdir1>0 0 0</fdir1>
+                <slip1>0</slip1>
+                <slip2>0</slip2>
+              </ode>
+              <torsional>
+                <coefficient>1</coefficient>
+                <patch_radius>0</patch_radius>
+                <surface_radius>0</surface_radius>
+                <use_patch_radius>1</use_patch_radius>
+                <ode>
+                  <slip>0</slip>
+                </ode>
+              </torsional>
+            </friction>
+            <bounce>
+              <restitution_coefficient>0</restitution_coefficient>
+              <threshold>1e+06</threshold>
+            </bounce>
+            <contact>
+              <collide_without_contact>0</collide_without_contact>
+              <collide_without_contact_bitmask>1</collide_without_contact_bitmask>
+              <collide_bitmask>1</collide_bitmask>
+              <ode>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+                <max_vel>0.01</max_vel>
+                <min_depth>0</min_depth>
+              </ode>
+              <bullet>
+                <split_impulse>1</split_impulse>
+                <split_impulse_penetration_threshold>-0.01</split_impulse_penetration_threshold>
+                <soft_cfm>0</soft_cfm>
+                <soft_erp>0.2</soft_erp>
+                <kp>1e+13</kp>
+                <kd>1</kd>
+              </bullet>
+            </contact>
+          </surface>
+        </collision>
+        <self_collide>0</self_collide>
+        <enable_wind>0</enable_wind>
+        <kinematic>0</kinematic>
+      </link>
+      <static>1</static>
+      <allow_auto_disable>1</allow_auto_disable>
+
+      <plugin name="model_move_5" filename="libmodel_move.so">
+        <goals>
+          <pose>7 -6 0.85 0 0 0</pose>
+          <pose>0 -6 0.85 0 0 0</pose>
+          <pose>7 -6 0.85 0 0 0</pose>
+          <pose>0 -6 0.85 0 0 0</pose>
+          <pose>7 -6 0.85 0 0 0</pose>
+          <pose>0 -6 0.85 0 0 0</pose>
+          <pose>7 -6 0.85 0 0 0</pose>
+          <pose>0 -6 0.85 0 0 0</pose>
+          <pose>7 -6 0.85 0 0 0</pose>
+          <pose>0 -6 0.85 0 0 0</pose>
+        </goals>
+      </plugin>
+      <plugin name="gazebo_ros_p3d_5" filename="libgazebo_ros_p3d.so">
+        <ros>
+          <namespace>crowd</namespace>
+          <remapping>odom:=ped_5</remapping>
+        </ros>
+        <body_name>link</body_name>
+        <update_rate>10</update_rate>
+        <xyz_offset>0 0 0</xyz_offset>
+        <rpy_offset>0 0 0</rpy_offset>
+        <gaussian_noise>0.00</gaussian_noise>
+      </plugin>
+    </model>
+
     <!-- State elements are used in log files to record the current state of the simulation -->
-    <state world_name='default'>
+    <state world_name="default">
       <sim_time>0 0</sim_time>
       <real_time>0 0</real_time>
       <wall_time>1685801226 303679393</wall_time>
       <iterations>0</iterations>
 
-      <model name='ground_plane'>
+      <model name="ground_plane">
         <pose>0 0 0 0 0 0</pose>
         <scale>1 1 1</scale>
-        <link name='link'>
+        <link name="link">
+          <pose>0 0 0 0 0 0</pose>
           <velocity>0 0 0 0 0 0</velocity>
           <acceleration>0 0 0 0 0 0</acceleration>
           <wrench>0 0 0 0 0 0</wrench>
         </link>
       </model>
 
-      <light name='sun'>
+      <light name="sun">
         <pose>0 0 10 0 0 0</pose>
       </light>
 
-      <model name='ped_1'>
+      <model name="ped_1">
         <scale>1 1 1</scale>
-        <link name='link'>
+        <link name="link">
           <velocity>0 0 0 0 0 0</velocity>
           <acceleration>0 0 0 0 0 0</acceleration>
           <wrench>0 0 0 0 0 0</wrench>
         </link>
       </model>
-      <model name='ped_2'>
+      <model name="ped_2">
         <scale>1 1 1</scale>
-        <link name='link'>
+        <link name="link">
           <velocity>0 0 0 0 0 0</velocity>
           <acceleration>0 0 0 0 0 0</acceleration>
           <wrench>0 0 0 0 0 0</wrench>
         </link>
       </model>
-      <model name='ped_3'>
+      <model name="ped_3">
         <scale>1 1 1</scale>
-        <link name='link'>
+        <link name="link">
           <velocity>0 0 0 0 0 0</velocity>
-          <acceleration>0 0 0 0 -0 0</acceleration>
+          <acceleration>0 0 0 0 0 0</acceleration>
+          <wrench>0 0 0 0 0 0</wrench>
+        </link>
+      </model>
+      <model name="ped_4">
+        <scale>1 1 1</scale>
+        <link name="link">
+          <velocity>0 0 0 0 0 0</velocity>
+          <acceleration>0 0 0 0 0 0</acceleration>
+          <wrench>0 0 0 0 0 0</wrench>
+        </link>
+      </model>
+      <model name="ped_5">
+        <scale>1 1 1</scale>
+        <link name="link">
+          <velocity>0 0 0 0 0 0</velocity>
+          <acceleration>0 0 0 0 0 0</acceleration>
           <wrench>0 0 0 0 0 0</wrench>
         </link>
       </model>
     </state>
 
     <!-- Define the lighting of the world -->
-    <light name='sun' type='directional'>
+    <light name="sun" type="directional">
       <cast_shadows>1</cast_shadows>
       <pose>0 0 10 0 -0 0</pose>
       <diffuse>0.8 0.8 0.8 1</diffuse>
@@ -478,8 +768,8 @@
     <!-- Define the physics of the world -->
     <gravity>0 0 -9.8</gravity>
     <magnetic_field>6e-06 2.3e-05 -4.2e-05</magnetic_field>
-    <atmosphere type='adiabatic'/>
-    <physics type='ode'>
+    <atmosphere type="adiabatic"/>
+    <physics type="ode">
       <max_step_size>0.001</max_step_size>
       <real_time_factor>1</real_time_factor>
       <real_time_update_rate>1000</real_time_update_rate>
@@ -499,9 +789,9 @@
       <heading_deg>180</heading_deg>
     </spherical_coordinates>
 
-    <gui fullscreen='0'>
-      <camera name='user_camera'>
-        <pose>16.4746 12.4988 9.687 0 0.419262 -2.55437</pose>
+    <gui fullscreen="0">
+      <camera name="user_camera">
+        <pose>16.9003 7.3628 7.13028 0 0.471643 -2.64299</pose>
         <view_controller>orbit</view_controller>
         <projection_type>perspective</projection_type>
       </camera>
