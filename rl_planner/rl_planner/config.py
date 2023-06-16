@@ -1,6 +1,6 @@
 
 class Config:
-    SENSING_HORIZON = 10.0
+    SENSING_HORIZON = 8.0
 
     DEVICE = "/cpu:0"
 

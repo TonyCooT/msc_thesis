@@ -2,8 +2,8 @@ rl_planner:
   rl_planner:
       ros__parameters:
         checkpoint: "network_01990000"
-        pref_speed: 1.2
+        pref_speed: 1.0
         radius: 0.9
-        near_goal_threshold: 0.2
-        sensing_horizon: 10.0
+        near_goal_threshold: 0.9
+        sensing_horizon: 8.0
         max_num_other_agent_observed: 9

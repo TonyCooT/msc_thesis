@@ -63,6 +63,7 @@ class Agent():
         clipped_sorted_inds = sorted_inds[-Config.MAX_NUM_OTHER_AGENTS_OBSERVED:]
         clipped_sorted_agents = [agents[i] for i in clipped_sorted_inds]
 
+        i = 0
         for other_agent in clipped_sorted_agents:
             # project other elements onto the new reference frame
             rel_pos_to_other_global_frame = other_agent.pos_global_frame - self.pos_global_frame
@@ -74,14 +75,15 @@ class Agent():
             dist_to_other = dist_between_agent_centers - self.radius - other_agent.radius
             combined_radius = self.radius + other_agent.radius
 
-            other_obs = np.array([p_parallel_ego_frame, p_orthog_ego_frame, v_parallel_ego_frame, v_orthog_ego_frame, other_agent.radius, dist_to_other, combined_radius])
+            other_obs = np.array([p_parallel_ego_frame, p_orthog_ego_frame, v_parallel_ego_frame, v_orthog_ego_frame, other_agent.radius, combined_radius, dist_to_other])
 
             start_index = Config.AGENT_ID_LENGTH + Config.FIRST_STATE_INDEX + Config.HOST_AGENT_OBSERVATION_LENGTH + Config.OTHER_AGENT_OBSERVATION_LENGTH * i
             end_index = Config.AGENT_ID_LENGTH + Config.FIRST_STATE_INDEX + Config.HOST_AGENT_OBSERVATION_LENGTH + Config.OTHER_AGENT_OBSERVATION_LENGTH * (i + 1)
 
             obs[start_index:end_index] = other_obs
+            i += 1
 
-        obs[Config.AGENT_ID_LENGTH] = len(clipped_sorted_agents) # Will be used by RNN for seq_length
+        obs[Config.AGENT_ID_LENGTH] = i # Will be used by RNN for seq_length
 
         return obs
 
@@ -94,6 +96,9 @@ class Agent():
         """
         goal_direction = self.goal_global_frame - self.pos_global_frame
         self.dist_to_goal = np.linalg.norm(goal_direction)
-        ref_prll = goal_direction
+        if self.dist_to_goal > 1e-8:
+            ref_prll = goal_direction / self.dist_to_goal
+        else:
+            ref_prll = goal_direction
         ref_orth = np.array([-ref_prll[1], ref_prll[0]])
         return ref_prll, ref_orth

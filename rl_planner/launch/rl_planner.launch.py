@@ -15,18 +15,18 @@ def generate_launch_description():
                                      description="Absolute path to config file")
 
     rl_planner_node = Node(
-         package="rl_planner",
-         executable="rl_planner",
-         namespace="/rl_planner",
-         remappings=[
-                ("/rl_planner/cmd_vel", "/rl_planner/cmd_vel"),
-                ("/rl_planner/pose", "/rl_planner/pose"),
-                ("/rl_planner/velocity", "/rl_planner/velocity"),
-                ("/rl_planner/peds", "/rl_planner/peds"),
-                ("/rl_planner/goal", "/rl_planner/goal")
+        package="rl_planner",
+        executable="rl_planner",
+        namespace="/rl_planner",
+        remappings=[
+            ("/rl_planner/cmd_vel", "/velocity_controller/cmd_vel_unstamped"),
+            ("/rl_planner/pose", "/rl_planner/pose"),
+            ("/rl_planner/velocity", "/rl_planner/velocity"),
+            ("/rl_planner/peds", "/rl_planner/peds"),
+            ("/rl_planner/goal", "/rl_planner/goal")
         ],
-         output="screen",
-         parameters=[LaunchConfiguration("config")]
+        output="screen",
+        parameters=[LaunchConfiguration("config")]
     )
 
     return LaunchDescription([

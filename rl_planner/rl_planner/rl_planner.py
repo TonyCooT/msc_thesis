@@ -39,6 +39,7 @@ class RlPlanner(Node):
         self.pref_speed = pref_speed
         self.radius = radius
         self.desired_action = np.zeros(2)
+        self.near_goal_threshold = near_goal_threshold
 
         actions = Actions()
         nn = NetworkVPRNN(Config.DEVICE)
@@ -71,6 +72,8 @@ class RlPlanner(Node):
         # control timer
         self.control_timer = self.create_timer(0.01, self.control_callback)
         self.nn_timer = self.create_timer(0.1, self.compute_action_callback)
+
+        self.get_logger().info("Done")
 
     def pose_callback(self, msg):
         self.pose = msg
@@ -117,12 +120,10 @@ class RlPlanner(Node):
 
         if self.operation_mode == 1:
             desired_yaw = self.desired_action[1]
-            yaw_error = desired_yaw - self.psi
-            if abs(yaw_error) > np.pi:
-                yaw_error -= np.sign(yaw_error) * 2 * np.pi
+            yaw_error = self.wrap(desired_yaw - self.psi)
 
             vx = self.desired_action[0]
-            gain = 2
+            gain = 4.0
             vw = gain * yaw_error
 
             msg = Twist()
@@ -132,10 +133,10 @@ class RlPlanner(Node):
         elif self.operation_mode == 2:
             self.stop_moving_flag = False
             angle_to_goal = np.arctan2(self.global_goal.pose.position.y - self.pose.pose.position.y, self.global_goal.pose.position.x - self.pose.pose.position.x)
-            global_yaw_error = self.psi - angle_to_goal
+            global_yaw_error = angle_to_goal - self.psi
             if abs(global_yaw_error) > 0.5:
                 vx = 0.0
-                vw = 1.0
+                vw = np.sign(global_yaw_error) * 1.0
                 msg = Twist()
                 msg.linear.x = vx
                 msg.angular.z = vw
@@ -173,21 +174,12 @@ class RlPlanner(Node):
         # convert agent states into observation vector and query the policy
         other_agents_state = copy.deepcopy(self.other_agents_state)
         obs = host_agent.observe(other_agents_state)[1:]
+        #self.get_logger().info(f"[observe]: {obs}')
         obs = np.expand_dims(obs, axis=0)
         predictions = self.nn.predict_p(obs)[0]
 
         raw_action = copy.deepcopy(self.actions[np.argmax(predictions)])
         action = np.array([pref_speed * raw_action[0], self.wrap(raw_action[1] + self.psi)])
-
-        # if close to goal
-        kp_v = 0.5
-        kp_r = 1
-
-        if host_agent.dist_to_goal < 2.0:
-            pref_speed = max(min(kp_v * (host_agent.dist_to_goal - 0.1), pref_speed), 0.0)
-            action[0] = min(raw_action[0], pref_speed)
-            turn_amount = max(min(kp_r * (host_agent.dist_to_goal - 0.1), 1.0), 0.0) * raw_action[1]
-            action[1] = self.wrap(turn_amount + self.psi)
 
         if host_agent.dist_to_goal < self.near_goal_threshold:
             self.stop_moving_flag = True
