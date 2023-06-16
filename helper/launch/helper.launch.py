@@ -9,14 +9,15 @@ from launch_ros.actions import Node
 
 def generate_launch_description():
     helper_node = Node(
-         package="helper_node",
-         executable="helper_node",
+         package="helper",
+         executable="helper",
          remappings=[
                 ("/crowd/ped_1", "/crowd/ped_1"),
                 ("/crowd/ped_2", "/crowd/ped_2"),
                 ("/crowd/ped_3", "/crowd/ped_3"),
                 ("/crowd/ped_4", "/crowd/ped_4"),
                 ("/crowd/ped_5", "/crowd/ped_5"),
+                ("/ground_truth", "/ground_truth"),
                 ("/odometry/filtered", "/odometry/filtered"),
                 ("/rl_planner/pose", "/rl_planner/pose"),
                 ("/rl_planner/velocity", "/rl_planner/velocity"),
