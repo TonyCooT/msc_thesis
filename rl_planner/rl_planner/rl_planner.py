@@ -174,7 +174,6 @@ class RlPlanner(Node):
         # convert agent states into observation vector and query the policy
         other_agents_state = copy.deepcopy(self.other_agents_state)
         obs = host_agent.observe(other_agents_state)[1:]
-        #self.get_logger().info(f"[observe]: {obs}')
         obs = np.expand_dims(obs, axis=0)
         predictions = self.nn.predict_p(obs)[0]
 

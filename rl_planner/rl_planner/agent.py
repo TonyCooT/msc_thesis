@@ -88,12 +88,6 @@ class Agent():
         return obs
 
     def get_ref(self):
-        """
-        Using current and goal position of agent in global frame, compute coordinate axes of ego frame
-        Returns:
-        ref_prll: vector pointing from agent position to goal
-        ref_orthog: vector orthogonal to ref_prll
-        """
         goal_direction = self.goal_global_frame - self.pos_global_frame
         self.dist_to_goal = np.linalg.norm(goal_direction)
         if self.dist_to_goal > 1e-8:
