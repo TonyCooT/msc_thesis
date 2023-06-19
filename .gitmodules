@@ -1,0 +1,4 @@
+[submodule "rl_collision_avoidance"]
+	path = rl_collision_avoidance
+	url = https://github.com/mit-acl/rl_collision_avoidance.git
+	branch = release
