@@ -25,6 +25,7 @@ class Helper(Node):
         self.num = 4
         self.peds_ids = np.array([1, 2, 3, 4, 5])
         self.peds_position = np.array([[0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]])
+        self.peds_truth_position = np.array([[0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]])
         self.peds_velocity = np.array([[0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0], [0.0, 0.0]])
         self.peds_radius = radius
         self.peds_time = np.array([0.0, 0.0, 0.0, 0.0, 0.0])
@@ -32,9 +33,11 @@ class Helper(Node):
         # optional elements
         self.goal_pub_flag = True
         self.goal_pub_time = float(self.get_clock().now().nanoseconds / 10**9)
-        self.radius_noise_flag = False
+        self.start_time = 10.0
         self.robot_truth_position = np.array([0.0, 0.0])
         self.robot_truth_time = 0.0
+        self.noise_switch = 0
+        self.noise_sigma = 0.1
         self.file_name = "output.txt"
         file = open(self.file_name,"w")
         file.close()
@@ -60,7 +63,7 @@ class Helper(Node):
         # control timer
         self.robot_info_timer = self.create_timer(0.1, self.robot_info_callback)
         self.peds_info_timer = self.create_timer(0.1, self.peds_info_callback)
-        self.output_timer = self.create_timer(0.25, self.output_callback)
+        self.output_timer = self.create_timer(0.5, self.output_callback)
 
     def robot_truth_callback(self, msg):
         self.robot_truth_position[0] = msg.pose.pose.position.x
@@ -88,14 +91,18 @@ class Helper(Node):
 
     def ped_one_callback(self, msg):
         if self.peds_time[0] == 0.0:
-            self.peds_position[0,0] = msg.pose.pose.position.x
-            self.peds_position[0,1] = msg.pose.pose.position.y
+            self.peds_position[0,0] = msg.pose.pose.position.x + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+            self.peds_position[0,1] = msg.pose.pose.position.y + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+            self.peds_truth_position[0,0] = msg.pose.pose.position.x
+            self.peds_truth_position[0,1] = msg.pose.pose.position.y
             self.peds_time[0] = float(self.get_clock().now().nanoseconds / 10**9)
             return
 
         prev_ped_position = copy.deepcopy(self.peds_position[0,:])
-        self.peds_position[0,0] = msg.pose.pose.position.x
-        self.peds_position[0,1] = msg.pose.pose.position.y
+        self.peds_position[0,0] = msg.pose.pose.position.x + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+        self.peds_position[0,1] = msg.pose.pose.position.y + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+        self.peds_truth_position[0,0] = msg.pose.pose.position.x
+        self.peds_truth_position[0,1] = msg.pose.pose.position.y
 
         now = float(self.get_clock().now().nanoseconds / 10**9)
         dt = now - self.peds_time[0]
@@ -105,14 +112,18 @@ class Helper(Node):
 
     def ped_two_callback(self, msg):
         if self.peds_time[1] == 0.0:
-            self.peds_position[1,0] = msg.pose.pose.position.x
-            self.peds_position[1,1] = msg.pose.pose.position.y
+            self.peds_position[1,0] = msg.pose.pose.position.x + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+            self.peds_position[1,1] = msg.pose.pose.position.y + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+            self.peds_truth_position[1,0] = msg.pose.pose.position.x
+            self.peds_truth_position[1,1] = msg.pose.pose.position.y
             self.peds_time[1] = float(self.get_clock().now().nanoseconds / 10**9)
             return
 
         prev_ped_position = copy.deepcopy(self.peds_position[1,:])
-        self.peds_position[1,0] = msg.pose.pose.position.x
-        self.peds_position[1,1] = msg.pose.pose.position.y
+        self.peds_position[1,0] = msg.pose.pose.position.x + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+        self.peds_position[1,1] = msg.pose.pose.position.y + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+        self.peds_truth_position[1,0] = msg.pose.pose.position.x
+        self.peds_truth_position[1,1] = msg.pose.pose.position.y
 
         now = float(self.get_clock().now().nanoseconds / 10**9)
         dt = now - self.peds_time[1]
@@ -122,14 +133,18 @@ class Helper(Node):
 
     def ped_three_callback(self, msg):
         if self.peds_time[2] == 0.0:
-            self.peds_position[2,0] = msg.pose.pose.position.x
-            self.peds_position[2,1] = msg.pose.pose.position.y
+            self.peds_position[2,0] = msg.pose.pose.position.x + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+            self.peds_position[2,1] = msg.pose.pose.position.y + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+            self.peds_truth_position[2,0] = msg.pose.pose.position.x
+            self.peds_truth_position[2,1] = msg.pose.pose.position.y
             self.peds_time[2] = float(self.get_clock().now().nanoseconds / 10**9)
             return
 
         prev_ped_position = copy.deepcopy(self.peds_position[2,:])
-        self.peds_position[2,0] = msg.pose.pose.position.x
-        self.peds_position[2,1] = msg.pose.pose.position.y
+        self.peds_position[2,0] = msg.pose.pose.position.x + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+        self.peds_position[2,1] = msg.pose.pose.position.y + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+        self.peds_truth_position[2,0] = msg.pose.pose.position.x
+        self.peds_truth_position[2,1] = msg.pose.pose.position.y
 
         now = float(self.get_clock().now().nanoseconds / 10**9)
         dt = now - self.peds_time[2]
@@ -139,14 +154,18 @@ class Helper(Node):
 
     def ped_four_callback(self, msg):
         if self.peds_time[3] == 0.0:
-            self.peds_position[3,0] = msg.pose.pose.position.x
-            self.peds_position[3,1] = msg.pose.pose.position.y
+            self.peds_position[3,0] = msg.pose.pose.position.x + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+            self.peds_position[3,1] = msg.pose.pose.position.y + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+            self.peds_truth_position[3,0] = msg.pose.pose.position.x
+            self.peds_truth_position[3,1] = msg.pose.pose.position.y
             self.peds_time[3] = float(self.get_clock().now().nanoseconds / 10**9)
             return
 
         prev_ped_position = copy.deepcopy(self.peds_position[3,:])
-        self.peds_position[3,0] = msg.pose.pose.position.x
-        self.peds_position[3,1] = msg.pose.pose.position.y
+        self.peds_position[3,0] = msg.pose.pose.position.x + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+        self.peds_position[3,1] = msg.pose.pose.position.y + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+        self.peds_truth_position[3,0] = msg.pose.pose.position.x
+        self.peds_truth_position[3,1] = msg.pose.pose.position.y
 
         now = float(self.get_clock().now().nanoseconds / 10**9)
         dt = now - self.peds_time[3]
@@ -156,14 +175,18 @@ class Helper(Node):
 
     def ped_five_callback(self, msg):
         if self.peds_time[4] == 0.0:
-            self.peds_position[4,0] = msg.pose.pose.position.x
-            self.peds_position[4,1] = msg.pose.pose.position.y
+            self.peds_position[4,0] = msg.pose.pose.position.x + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+            self.peds_position[4,1] = msg.pose.pose.position.y + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+            self.peds_truth_position[4,0] = msg.pose.pose.position.x
+            self.peds_truth_position[4,1] = msg.pose.pose.position.y
             self.peds_time[4] = float(self.get_clock().now().nanoseconds / 10**9)
             return
 
         prev_ped_position = copy.deepcopy(self.peds_position[4,:])
-        self.peds_position[4,0] = msg.pose.pose.position.x
-        self.peds_position[4,1] = msg.pose.pose.position.y
+        self.peds_position[4,0] = msg.pose.pose.position.x + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+        self.peds_position[4,1] = msg.pose.pose.position.y + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1)
+        self.peds_truth_position[4,0] = msg.pose.pose.position.x
+        self.peds_truth_position[4,1] = msg.pose.pose.position.y
 
         now = float(self.get_clock().now().nanoseconds / 10**9)
         dt = now - self.peds_time[4]
@@ -183,8 +206,8 @@ class Helper(Node):
         self.pub_robot_velocity.publish(robot_velocity_msg)
 
         now = float(self.get_clock().now().nanoseconds / 10**9)
-        if self.once_flag and (now - self.goal_time) > 5.0:
-            self.once_flag = False
+        if self.goal_pub_flag and (now - self.goal_pub_time) > self.start_time:
+            self.goal_pub_flag = False
             robot_goal_pose_msg = PoseStamped()
             robot_goal_pose_msg.pose.position.x = 10.0
             robot_goal_pose_msg.pose.position.y = -2.0
@@ -202,17 +225,14 @@ class Helper(Node):
             velocity.x = self.peds_velocity[ped, 0]
             velocity.y = self.peds_velocity[ped, 1]
             msg.velocity.append(velocity)
-            if self.radius_noise_flag:
-                msg.radius.append(self.peds_radius + np.random.normal(0.0, 0.01, 1))
-            else:
-                msg.radius.append(self.peds_radius)
+            msg.radius.append(self.peds_radius + self.noise_switch * np.random.normal(0.0, self.noise_sigma, 1))
         self.pub_peds_info.publish(msg)
 
     def output_callback(self):
         with open(self.file_name, "a") as file:
-            file.write(str(f"robot truth: {self.robot_truth_position[0]}, {self.robot_truth_position[1]}, {self.robot_truth_time}") + " \n")
+            file.write(str(f"robot: {self.robot_truth_position[0]}, {self.robot_truth_position[1]}, {self.robot_truth_time}") + "\n")
             for ped in range(self.num):
-                file.write(str(f"peds: {self.peds_ids[ped]}, {self.peds_position[ped,:]}") + " \n")
+                file.write(str(f"peds: {self.peds_ids[ped]}, {self.peds_truth_position[ped,:]}") + "\n")
 
 def main(args = None):
     rclpy.init(args = args)
