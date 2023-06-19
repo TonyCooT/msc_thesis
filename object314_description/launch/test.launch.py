@@ -14,7 +14,7 @@ def generate_launch_description():
     pkg_share = os.path.join(get_package_share_path("object314_description"))
     rl_planner_pkg_share = os.path.join(get_package_share_path("rl_planner"))
     helper_pkg_share = os.path.join(get_package_share_path("helper"))
-    default_world_path = os.path.join(pkg_share, "world", "social_scene_static.world")
+    default_world_path = os.path.join(pkg_share, "world", "social_scene_dynamic_one.world")
 
     world_arg = DeclareLaunchArgument(name="world", default_value=default_world_path,
                                      description="Absolute path to world file")
@@ -37,15 +37,9 @@ def generate_launch_description():
                 )])
     )
 
-    delay_helper_node_callback = RegisterEventHandler(
-        event_handler=OnProcessExit(
-            target_action=rl_planner_node,
-            on_exit=[helper_node],
-        )
-    )
-
     return LaunchDescription([
+        world_arg,
         sim,
         rl_planner_node,
-        delay_helper_node_callback
+        helper_node
     ])

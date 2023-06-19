@@ -6,18 +6,16 @@
   <xacro:arg name="use_ros2_control" default="false"/>
   <xacro:arg name="control_config" default="$(find object314_description)/config/control.yaml"/>
 
-  <!-- Sensor switch -->
-  <xacro:arg name="use_gps" default="false"/>
-  <xacro:arg name="use_imu" default="true"/>
-  <xacro:arg name="use_camera" default="false"/>
-  <xacro:arg name="use_2dlidar" default="false"/>
-  <xacro:arg name="use_3dlidar" default="false"/>
-
   <!-- Matherials -->
   <xacro:include filename="$(find object314_description)/urdf/object314_materials.xacro"/>
 
   <!-- Gazebo -->
   <xacro:include filename="$(find object314_description)/urdf/object314_gazebo.xacro"/>
+  <xacro:arg name="use_gps" default="false"/>
+  <xacro:arg name="use_imu" default="true"/>
+  <xacro:arg name="use_camera" default="false"/>
+  <xacro:arg name="use_2dlidar" default="false"/>
+  <xacro:arg name="use_3dlidar" default="false"/>
   <xacro:gazebo_plugin_p3d link="base_footprint"/>
 
   <!-- Base footprint size and position, m -->
